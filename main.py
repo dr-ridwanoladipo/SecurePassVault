@@ -31,7 +31,7 @@ def generate_password():
 
 
 def save():
-    website = website_entry.get()
+    website = website_entry.get().capitalize()
     email = email_entry.get()
     password = password_entry.get()
     new_data = {
@@ -63,42 +63,67 @@ def save():
             password_entry.delete(0, END)
 
 
+# ---------------------------- FIND PASSWORD ------------------------------- #
+
+def find_password():
+    website = website_entry.get().capitalize()
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+            pyperclip.copy(password)
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
 window.title("Password Manager")
-window.config(padx=50, pady=50)
+window.config(padx=60, pady=60)
 
 canvas = Canvas(height=200, width=200)
 logo_img = PhotoImage(file="logo.png")
 canvas.create_image(100, 100, image=logo_img)
-canvas.grid(row=0, column=0, columnspan=3)  # Adjusted columnspan for logo
+canvas.grid(row=0, column=0, columnspan=3)  # Adjusted column span for logo
 
 # Labels
 website_label = Label(text="Website:")
 website_label.grid(row=1, column=0)
+
 email_label = Label(text="Email/Username:")
 email_label.grid(row=2, column=0)
+
 password_label = Label(text="Password:")
 password_label.grid(row=3, column=0)
 
 # Entries
-website_entry = Entry(width=40)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=31)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 
-email_entry = Entry(width=40)
+email_entry = Entry(width=50)
 email_entry.grid(row=2, column=1, columnspan=2)
 email_entry.insert(0, "@gmail.com")
 
-password_entry = Entry(width=21)
+password_entry = Entry(width=31)
 password_entry.grid(row=3, column=1)
 
 # Buttons
-generate_password_button = Button(text="Generate Password", command=generate_password, bd=1, relief="ridge")
-generate_password_button.grid(row=3, column=2, sticky="w")  # Align to the west (left)
+search_button = Button(text="Search", width=15, command=find_password, bd=1, relief="ridge")
+search_button.grid(row=1, column=2)
 
-add_button = Button(text="Add", width=34, command=save, bd=1, relief="ridge")
+generate_password_button = Button(text="Generate Password", width=15, command=generate_password, bd=1, relief="ridge")
+generate_password_button.grid(row=3, column=2)  # Align to the west (left)
+
+add_button = Button(text="Add", width=42, command=save, bd=1, relief="ridge")
 add_button.grid(row=4, column=1, columnspan=2)
 
 window.mainloop()
+
