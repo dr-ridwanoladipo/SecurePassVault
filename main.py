@@ -112,20 +112,32 @@ def find_password():
                 password = caesar(password, cipher_int, "decode")
                 messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
                 pyperclip.copy(password)
+                caesar_entry.delete(0, END)
             else:
                 messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 
+import os
+import sys
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+
+# UI SETUP
 window = Tk()
 window.title("Password Manager")
 window.config(padx=60, pady=60)
 
 canvas = Canvas(height=200, width=200)
-logo_img = PhotoImage(file="logo.png")
+logo_img = PhotoImage(file=resource_path("logo.png"))
 canvas.create_image(100, 100, image=logo_img)
-canvas.grid(row=0, column=0, columnspan=3)  # Adjusted column span for logo
+canvas.grid(row=0, column=0, columnspan=3) # Adjusted column span for logo
 
 # Labels
 website_label = Label(text="Website:")
@@ -168,3 +180,4 @@ add_button = Button(text="Add", width=15, command=save, bd=1, relief="ridge")
 add_button.grid(row=4, column=2)
 
 window.mainloop()
+
