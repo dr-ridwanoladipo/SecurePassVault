@@ -1,7 +1,6 @@
 import streamlit as st
 import random
 import string
-import pyperclip
 import json
 import os
 import base64
@@ -38,11 +37,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
 # Hash function for security key
 def hash_security_key(security_key):
     return hashlib.sha256(security_key.encode()).hexdigest()
-
 
 # Initialize session state
 if 'cipher_suite' not in st.session_state:
@@ -63,21 +60,17 @@ if 'clear_inputs' not in st.session_state:
 if 'generated_password' not in st.session_state:
     st.session_state.generated_password = ""
 
-
 # Encryption and decryption functions
 def encrypt(text):
     return st.session_state.cipher_suite.encrypt(text.encode()).decode()
 
-
 def decrypt(text):
     return st.session_state.cipher_suite.decrypt(text.encode()).decode()
-
 
 # Password generation function
 def generate_password(length=12):
     characters = string.ascii_letters + string.digits + string.punctuation
     return ''.join(random.choice(characters) for _ in range(length))
-
 
 # Save password function
 def save_password(website, email, password, security_key):
@@ -90,7 +83,6 @@ def save_password(website, email, password, security_key):
     st.success("Password saved successfully!")
     st.session_state.clear_inputs = True
 
-
 # Load data function
 def load_data():
     if not os.path.exists("passwords.json"):
@@ -98,9 +90,7 @@ def load_data():
     with open("passwords.json", "r") as file:
         return json.load(file)
 
-
 # Delete entry function
-
 def delete_entry(website, index):
     data = load_data()
     if website.lower() in data:
@@ -112,7 +102,6 @@ def delete_entry(website, index):
                 json.dump(data, file)
             return True
     return False
-
 
 # Main app
 def main():
@@ -154,11 +143,9 @@ def main():
         with col1:
             if st.button("Generate Password"):
                 generated_password = generate_password()
-                # Store the generated password in session state with a different key
                 st.session_state.generated_password = generated_password
                 st.code(generated_password)
-                pyperclip.copy(generated_password)
-                st.info("Password copied to clipboard!")
+                st.info("Password generated. Please copy it manually.")
 
         with col2:
             if st.button("Save Password"):
@@ -194,23 +181,6 @@ def main():
                         st.info(f"Entry {i + 1}:")
                         st.info(f"Email: {email}")
                         st.info(f"Password: {password}")
-
-                        copy_key = f"copy_{search_website}_{i}"
-                        copied_key = f"copied_{search_website}_{i}"
-
-                        if copied_key not in st.session_state:
-                            st.session_state[copied_key] = False
-
-                        def copy_password():
-                            pyperclip.copy(password)
-                            st.session_state[copied_key] = True
-
-                        if st.button(f"Copy Password (Entry {i + 1})", key=copy_key, on_click=copy_password):
-                            pass
-
-                        if st.session_state[copied_key]:
-                            st.success("Password copied to clipboard!")
-                            st.session_state[copied_key] = False
                 else:
                     st.error("Website not found in the database.")
             else:
@@ -247,7 +217,6 @@ def main():
         if st.session_state.get('delete_success'):
             st.success(st.session_state.delete_success)
             del st.session_state.delete_success
-
 
 if __name__ == "__main__":
     main()
