@@ -1,4 +1,14 @@
 import streamlit as st
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Install required packages
+install('cryptography')
+
+# Now import the rest of your modules
 import random
 import string
 import json
