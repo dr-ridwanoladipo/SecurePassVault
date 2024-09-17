@@ -1,57 +1,40 @@
 # Secure Password Manager
 
 ## Project Overview
-This Password Manager application demonstrates proficiency in building desktop applications using Python and Tkinter. It showcases skills in:
 
-- GUI Development with Tkinter
-- Cryptography Implementation
-- File Handling and JSON Data Management
-- Error Handling and User Input Validation
-- Clipboard Integration
+This Secure Password Manager is a robust, user-friendly application designed to safely store and manage passwords. Built with Python and Streamlit, it demonstrates proficiency in developing secure, interactive web applications.
 
 ## Key Features
 
-### 1. Intuitive User Interface
-- Clean and user-friendly GUI built with Tkinter
-- Responsive layout with proper alignment of components
+- **Secure Password Storage**: Utilizes strong encryption to protect stored passwords.
+- **Password Generation**: Includes a built-in password generator for creating strong, unique passwords.
+- **User-Friendly Interface**: Clean, intuitive UI built with Streamlit for easy navigation and use.
+- **Search Functionality**: Quickly find stored passwords for specific websites.
+- **Copy to Clipboard**: One-click copying of passwords for convenience.
+- **Delete Entries**: Ability to remove outdated or unnecessary password entries.
 
-### 2. Secure Password Generation
-- Generates strong, random passwords
-- Customizable password length and character types
+## Technologies Used
 
-### 3. Advanced Encryption
-- Implements Caesar cipher for password encryption
-- Allows users to set their own encryption key
+- **Python**: Core programming language
+- **Streamlit**: Web application framework
+- **Cryptography**: For secure encryption of passwords
+- **JSON**: For efficient data storage and retrieval
+- **Hashlib**: For secure hashing of the master password
 
-### 4. Efficient Data Management
-- Stores encrypted passwords in a JSON file
-- Provides quick search functionality for stored passwords
+## Skills Demonstrated
 
-### 5. Enhanced User Experience
-- Auto-copies generated passwords to clipboard
-- Displays success and error messages using message boxes
+- **Secure Programming Practices**: Implementing encryption and secure data handling.
+- **Full-Stack Development**: Combining backend logic with a responsive frontend.
+- **User Experience Design**: Creating an intuitive and accessible interface.
+- **Problem-Solving**: Addressing real-world security and usability challenges.
+- **Python Proficiency**: Leveraging various Python libraries and best practices.
 
-### 6. Security Considerations
-- Encrypts passwords before storing
-- Requires a security code for accessing stored passwords
+## Future Enhancements
 
-## Technical Stack
-- **Language**: Python 3.12
-- **GUI Framework**: Tkinter
-- **Data Storage**: JSON
-- **Additional Libraries**: pyperclip (for clipboard operations)
-
-## Code Quality and Best Practices
-- Follows PEP 8 style guidelines for Python code
-- Implements error handling for file operations and user inputs
-- Modular code structure with clear separation of concerns
-- Includes docstrings for main functions
-
-## Potential Enhancements
-- Implementing more robust encryption algorithms
-- Adding a master password feature for additional security
-- Integrating with cloud storage for backup and synchronization
+- Multi-user support with individual encrypted vaults
+- Password strength analysis and recommendations
+- Integration with browser extensions for auto-fill functionality
 
 ---
 
-This project demonstrates the ability to create a functional and secure desktop application using Python. It showcases skills in GUI development, data management, and basic cryptography, highlighting the capability to build practical software solutions.
+This project showcases my ability to create secure, user-centric applications using modern web technologies. It reflects my commitment to cybersecurity best practices and my skills in developing practical solutions to real-world problems.
