@@ -34,12 +34,26 @@ st.markdown("""
         border-radius: 5px;
         padding: 10px;
     }
+        .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        font-weight: bold;
+    }
+
 </style>
 """, unsafe_allow_html=True)
+
 
 # Hash function for security key
 def hash_security_key(security_key):
     return hashlib.sha256(security_key.encode()).hexdigest()
+
 
 # Initialize session state
 if 'cipher_suite' not in st.session_state:
@@ -60,17 +74,21 @@ if 'clear_inputs' not in st.session_state:
 if 'generated_password' not in st.session_state:
     st.session_state.generated_password = ""
 
+
 # Encryption and decryption functions
 def encrypt(text):
     return st.session_state.cipher_suite.encrypt(text.encode()).decode()
 
+
 def decrypt(text):
     return st.session_state.cipher_suite.decrypt(text.encode()).decode()
+
 
 # Password generation function
 def generate_password(length=12):
     characters = string.ascii_letters + string.digits + string.punctuation
     return ''.join(random.choice(characters) for _ in range(length))
+
 
 # Save password function
 def save_password(website, email, password, security_key):
@@ -83,12 +101,14 @@ def save_password(website, email, password, security_key):
     st.success("Password saved successfully!")
     st.session_state.clear_inputs = True
 
+
 # Load data function
 def load_data():
     if not os.path.exists("passwords.json"):
         return {}
     with open("passwords.json", "r") as file:
         return json.load(file)
+
 
 # Delete entry function
 def delete_entry(website, index):
@@ -103,9 +123,35 @@ def delete_entry(website, index):
             return True
     return False
 
+
 # Main app
 def main():
     st.title("🔐 Secure Password Manager")
+
+    # User Guide
+    with st.expander("📘 User Guide - Click to Expand"):
+        st.markdown("""
+        # Welcome to the Secure Password Manager! 🚀
+
+        Manage your passwords securely with ease. Here's how to use the app:
+
+        1. 🔑 **Security Key:** Look for the '>' symbol in the top-left corner of the screen. Click it to reveal the sidebar, where you can enter your security key.
+
+        2. ➕ **Add/Update Password:**
+           - Enter website, email, and password details.
+           - Use the "Generate Password" button for strong passwords.
+           - Click "Save Password" to store your entry.
+
+        3. 🔍 **Find Password:**
+           - Enter the website name to search for stored passwords.
+           - View and copy passwords for your accounts.
+
+        4. 🗑️ **Delete Entry:**
+           - Search for a website to delete its stored passwords.
+           - Remove individual entries as needed.
+
+        🛡️ **Important:** Keep your security key safe and never share it with anyone!
+        """)
 
     security_key = st.sidebar.text_input("Enter your security key", type="password")
 
@@ -145,7 +191,7 @@ def main():
                 generated_password = generate_password()
                 st.session_state.generated_password = generated_password
                 st.code(generated_password)
-                st.info("Password generated. Please copy it manually.")
+                st.info("Password generated. Please copy it.")
 
         with col2:
             if st.button("Save Password"):
@@ -167,9 +213,10 @@ def main():
         if st.session_state.search_clicked:
             if security_key:
                 data = load_data()
-                if search_website.lower() in data:
+                search_website = search_website.strip().lower()
+                if search_website in data:
                     st.success(f"Website: {search_website}")
-                    for i, entry in enumerate(data[search_website.lower()]):
+                    for i, entry in enumerate(data[search_website]):
                         email = entry["email"]
                         try:
                             password = decrypt(entry["password"])
@@ -199,9 +246,10 @@ def main():
         if st.session_state.delete_search_clicked:
             if security_key:
                 data = load_data()
-                if delete_website.lower() in data:
+                delete_website = delete_website.strip().lower()
+                if delete_website in data:
                     st.success(f"Website: {delete_website}")
-                    for i, entry in enumerate(data[delete_website.lower()]):
+                    for i, entry in enumerate(data[delete_website]):
                         st.info(f"Entry {i + 1}:")
                         st.info(f"Email: {entry['email']}")
                         if st.button(f"Delete Entry {i + 1}", key=f"delete_{delete_website}_{i}"):
@@ -217,6 +265,16 @@ def main():
         if st.session_state.get('delete_success'):
             st.success(st.session_state.delete_success)
             del st.session_state.delete_success
+
+    st.markdown(
+        """
+        <div class="footer">
+        © 2024 All Rights Reserved | Dr. Ridwan Oladipo
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 
 if __name__ == "__main__":
     main()
